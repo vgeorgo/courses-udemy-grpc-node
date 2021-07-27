@@ -1,0 +1,23 @@
+{
+  "name": "courses-udemy-grpc-node",
+  "version": "1.0.0",
+  "description": "Required to install gRPC Tools globally ``` npm install -g grpc-tools ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vgeorgo/courses-udemy-grpc-node.git"
+  },
+  "author": "vgeorgo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vgeorgo/courses-udemy-grpc-node/issues"
+  },
+  "homepage": "https://github.com/vgeorgo/courses-udemy-grpc-node#readme",
+  "dependencies": {
+    "google-protobuf": "^3.17.3",
+    "grpc": "^1.24.11"
+  }
+}
