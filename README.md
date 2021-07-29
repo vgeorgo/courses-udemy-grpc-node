@@ -15,5 +15,17 @@ protoc -I=. ./protos/dummy.proto
   --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin`
 ```
 
+## Run
+```
+# Static run
 
-protoc -I=. ./protos/dummy.proto --js_out=import_style=commonjs,binary:./server --grpc_out=./server --plugin=protoc-gen-grpc=`which grpc_tools_node_protoc_plugin`
+# starts the server
+npm run static-server
+# runs the client script, which is making the request
+npm run static-client
+
+# starts the server
+npm run dynamic-server
+# runs the client script, which is making the request
+npm run dynamic-client
+```
