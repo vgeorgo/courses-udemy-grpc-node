@@ -2,12 +2,13 @@ const grpc = require('grpc');
 
 const { GreetRequest, Greeting } = require('../server/protos/greet_pb');
 const { GreetServiceClient } = require('../server/protos/greet_grpc_pb');
+const { SumRequest, Sum } = require('../server/protos/sum_pb');
+const { SumServiceClient } = require('../server/protos/sum_grpc_pb');
 
-const main = () => {
-  const client = new GreetServiceClient(
-    'localhost:50051',
-    grpc.credentials.createInsecure(),
-  );
+const host = 'localhost:50051';
+
+const runGreet = () => {
+  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
 
   // Protocol buffer Greeting message
   const greeting = new Greeting();
@@ -25,6 +26,32 @@ const main = () => {
 
     console.log(r.getResult());
   });
+};
+
+const runSum = () => {
+  const client = new SumServiceClient(host, grpc.credentials.createInsecure());
+
+  // Protocol buffer Sum message
+  const sum = new Sum();
+  sum.setX(3);
+  sum.setY(10);
+
+  const request = new SumRequest();
+  request.setSum(sum);
+
+  client.sum(request, (err, r) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    console.log(r.getResult());
+  });
+};
+
+const main = () => {
+  runGreet();
+  runSum();
 };
 
 main();
