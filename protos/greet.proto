@@ -9,6 +9,8 @@ service GreetService {
   rpc GreetManyTimes (GreetRequest) returns (stream GreetResponse) {};
   // Client streaming RPC
   rpc LongGreet (stream GreetRequest) returns (GreetResponse) {};
+  // Bidirectional streaming RPC
+  rpc GreetEveryone (stream GreetRequest) returns (stream GreetResponse) {};
 }
 
 message Greeting {

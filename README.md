@@ -17,9 +17,14 @@ protoc -I=. ./protos/dummy.proto
 
 ## Description
 
-The dynamic version is used only to demonstrate de usage of the **@grpc/proto-loader** dependency and ahs only an example of Unary API.
+The dynamic version is used only to demonstrate de usage of the **@grpc/proto-loader** dependency and has only an example of Unary API.
 
-The static version is the one used to demonstrate both unary and streaming types of communication.
+The static version is the one used to demonstrate both unary, streaming types of communication and some other gRPC features. Each feature is separated in a different method, so we can run the code isolated from the other examples. For this comment/uncomment a method in the **client/static.js** main method.
+
+- Unary RPC: methods **runGreet**, **runSum**
+- Server streaming RPC: method **runGreetManyTimes**
+- Client streaming RPC: method **runLongGreet**
+- Bidirectional streaming RPC: method **runGreetEveryone**
 
 ## Run
 ```

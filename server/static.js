@@ -65,6 +65,52 @@ const longGreet = (call, callback) => {
 };
 
 /**
+ * Implements greetManyTimes RPC method
+ */
+const greetEveryone = (call, _) => {
+  const relateds = {};
+  const people = [];
+
+  call.on('data', (req) => {
+    const fullName = `${req.getGreeting().getFirstName()} ${req.getGreeting().getLastName()}`;
+    console.log('Client stream received data: ', fullName);
+
+    // Avoid duplicate entries
+    if (people.includes(fullName)) return;
+
+    const newIndex = people.length;
+    const relations = [];
+
+    people.push(fullName);
+
+    lastNames = req.getGreeting().getLastName().split(' ');
+    lastNames.forEach(lastName => {
+      if (!relateds[lastName]) relateds[lastName] = [];
+      relateds[lastName].forEach(index => {
+        // Avoid duplicate relations
+        if (relations.includes(people[index])) return;
+        relations.push(people[index]);
+      });
+
+      relateds[lastName].push(newIndex);
+    });
+
+    const greeting = new GreetResponse();
+    greeting.setResult(`${fullName} has ${relations.length} relations so far`);
+    call.write(greeting);
+  });
+
+  call.on('error', (err) => {
+    console.log('Client stream received error: ', err);
+  });
+
+  call.on('end', () => {
+    console.log('Client stream ended, stopping process');
+    call.end();
+  });
+};
+
+/**
  * Implements sum RPC method
  */
 const sum = (call, callback) => {
@@ -78,7 +124,7 @@ const main = () => {
   const serverAddr = '127.0.0.1:50051';
 
   // Services
-  server.addService(GreetServiceService, { greet, greetManyTimes, longGreet });
+  server.addService(GreetServiceService, { greet, greetManyTimes, longGreet, greetEveryone });
   server.addService(CalculatorServiceService, { sum });
 
   // Server start

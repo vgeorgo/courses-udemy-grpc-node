@@ -99,6 +99,60 @@ const runLongGreet = () => {
   }, 1000);
 };
 
+const runGreetEveryone = () => {
+  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const request = new GreetRequest();
+
+  const call = client.greetEveryone(request, () => { });
+
+  const responses = [
+    {
+      firstName: 'First',
+      lastName: 'Person',
+    },
+    {
+      firstName: 'John',
+      lastName: 'Doe',
+    },
+    {
+      firstName: 'Other',
+      lastName: 'Person',
+    },
+    {
+      firstName: 'Another',
+      lastName: 'Person',
+    }
+  ];
+
+  call.on('data', (res) => {
+    console.log('Server stream received data: ', res.getResult());
+  });
+  call.on('error', (err) => {
+    console.log('Server stream received error: ', err);
+  });
+  call.on('end', () => {
+    console.log('Server stream ended');
+  });
+
+  let step = 0;
+  const intervalId = setInterval(() => {
+    console.log(`Client streaming message: ${step}`);
+    const greeting = new Greeting();
+    const request = new GreetRequest();
+
+    greeting.setFirstName(responses[step].firstName);
+    greeting.setLastName(responses[step].lastName);
+    request.setGreeting(greeting);
+
+    call.write(request);
+
+    if (++step >= responses.length) {
+      clearInterval(intervalId);
+      call.end();
+    }
+  }, 1000);
+};
+
 const runSum = () => {
   const client = new CalculatorServiceClient(host, grpc.credentials.createInsecure());
 
@@ -120,7 +174,8 @@ const main = () => {
   // runGreet();
   // runSum();
   // runGreetManyTimes();
-  runLongGreet();
+  // runLongGreet();
+  runGreetEveryone();
 };
 
 main();
