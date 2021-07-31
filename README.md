@@ -25,6 +25,17 @@ The static version is the one used to demonstrate both unary, streaming types of
 - Server streaming RPC: method **runGreetManyTimes**
 - Client streaming RPC: method **runLongGreet**
 - Bidirectional streaming RPC: method **runGreetEveryone**
+- Error scenario: method **runSquareRootError**
+- Deadline error scenario: method **runGreetDeadlineError**
+
+## Generatig test certificates
+
+Have OpenSSL installed and run the command inside the root project folder:
+```
+sh ./scripts/gen_certs.sh
+```
+
+The output will be a **certs** folder with the certificates that will be used.
 
 ## Run
 ```

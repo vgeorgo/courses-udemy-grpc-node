@@ -1,4 +1,6 @@
+const path = require('path');
 const grpc = require('grpc');
+const fs = require('fs');
 
 const { GreetResponse } = require('./protos/greet_pb');
 const { GreetServiceService } = require('./protos/greet_grpc_pb');
@@ -136,6 +138,19 @@ const squareRoot = (call, callback) => {
   callback(null, response);
 };
 
+const getCertificateConfig = (safe = false) => {
+  if (!safe) return grpc.ServerCredentials.createInsecure();
+
+  return grpc.ServerCredentials.createSsl(
+    fs.readFileSync(path.join(__dirname, '..', 'certs', 'ca.crt')),
+    [{
+      cert_chain: fs.readFileSync(path.join(__dirname, '..', 'certs', 'server.key')),
+      private_key: fs.readFileSync(path.join(__dirname, '..', 'certs', 'server.crt'))
+    }],
+    true
+  );
+}
+
 const main = () => {
   const server = new grpc.Server();
   const serverAddr = '127.0.0.1:50051';
@@ -145,7 +160,7 @@ const main = () => {
   server.addService(CalculatorServiceService, { sum, squareRoot });
 
   // Server start
-  server.bind(serverAddr, grpc.ServerCredentials.createInsecure());
+  server.bind(serverAddr, getCertificateConfig(false));
   server.start();
   console.log(`Server running on ${serverAddr}`);
 };

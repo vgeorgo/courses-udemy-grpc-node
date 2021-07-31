@@ -1,4 +1,6 @@
+const path = require('path');
 const grpc = require('grpc');
+const fs = require('fs');
 
 const { GreetRequest, Greeting } = require('../server/protos/greet_pb');
 const { GreetServiceClient } = require('../server/protos/greet_grpc_pb');
@@ -6,6 +8,17 @@ const { SumRequest, SquareRootRequest } = require('../server/protos/calculator_p
 const { CalculatorServiceClient } = require('../server/protos/calculator_grpc_pb');
 
 const host = 'localhost:50051';
+const useCertificates = false;
+
+const getCertificateConfig = () => {
+  if (!useCertificates) return grpc.credentials.createInsecure();
+
+  return grpc.credentials.createSsl(
+    fs.readFileSync(path.join(__dirname, '..', 'certs', 'ca.crt')),
+    fs.readFileSync(path.join(__dirname, '..', 'certs', 'client.key')),
+    fs.readFileSync(path.join(__dirname, '..', 'certs', 'client.crt'))
+  );
+}
 
 const getRPCDeadline = (timeMs) => {
   return new Date(new Date() + timeMs);
@@ -15,7 +28,7 @@ const getDefaultDeadline = () => getRPCDeadline(1000);
 const getLongDeadline = () => getRPCDeadline(7000);
 
 const runGreet = () => {
-  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const client = new GreetServiceClient(host, getCertificateConfig());
   const greeting = new Greeting();
   const request = new GreetRequest();
 
@@ -34,7 +47,7 @@ const runGreet = () => {
 };
 
 const runGreetDeadlineError = () => {
-  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const client = new GreetServiceClient(host, getCertificateConfig());
   const greeting = new Greeting();
   const request = new GreetRequest();
   const deadline = getForceErrorDeadline();
@@ -54,7 +67,7 @@ const runGreetDeadlineError = () => {
 };
 
 const runGreetManyTimes = () => {
-  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const client = new GreetServiceClient(host, getCertificateConfig());
 
   // Protocol buffer Greeting message
   const greeting = new Greeting();
@@ -80,7 +93,7 @@ const runGreetManyTimes = () => {
 };
 
 const runLongGreet = () => {
-  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const client = new GreetServiceClient(host, getCertificateConfig());
   const request = new GreetRequest();
 
   const call = client.longGreet(request, (err, r) => {
@@ -127,7 +140,7 @@ const runLongGreet = () => {
 };
 
 const runGreetEveryone = () => {
-  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const client = new GreetServiceClient(host, getCertificateConfig());
   const request = new GreetRequest();
 
   const call = client.greetEveryone(request, () => { });
@@ -181,7 +194,7 @@ const runGreetEveryone = () => {
 };
 
 const runSum = () => {
-  const client = new CalculatorServiceClient(host, grpc.credentials.createInsecure());
+  const client = new CalculatorServiceClient(host, getCertificateConfig());
 
   const request = new SumRequest();
   request.setX(3);
@@ -198,7 +211,7 @@ const runSum = () => {
 };
 
 const runSquareRootError = () => {
-  const client = new CalculatorServiceClient(host, grpc.credentials.createInsecure());
+  const client = new CalculatorServiceClient(host, getCertificateConfig());
 
   const number = -3;
   const request = new SquareRootRequest();
@@ -215,13 +228,13 @@ const runSquareRootError = () => {
 };
 
 const main = () => {
-  // runGreet();
+  runGreet();
   // runSum();
   // runGreetManyTimes();
   // runLongGreet();
   // runGreetEveryone();
   // runSquareRootError();
-  runGreetDeadlineError();
+  // runGreetDeadlineError();
 };
 
 main();
