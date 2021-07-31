@@ -29,15 +29,39 @@ const greetManyTimes = (call, _) => {
   let step = 0;
   const intervalId = setInterval(() => {
     const greeting = new GreetResponse();
-    greeting.setResult(responses[step++]);
+    greeting.setResult(responses[step]);
 
     call.write(greeting);
 
-    if (step >= responses.length) {
+    if (++step >= responses.length) {
       clearInterval(intervalId);
       call.end();
     }
   }, 1000);
+};
+
+/**
+ * Implements greetManyTimes RPC method
+ */
+const longGreet = (call, callback) => {
+  let processedRecords = 0;
+
+  call.on('data', (req) => {
+    console.log('Client stream received data: ', `Hello ${req.getGreeting().getFirstName()} ${req.getGreeting().getLastName()}`);
+    processedRecords++;
+  });
+  call.on('status', (status) => {
+    console.log('Client stream received status: ', status);
+  });
+  call.on('error', (err) => {
+    console.log('Client stream received error: ', err);
+  });
+  call.on('end', () => {
+    console.log('Client stream ended, sending response');
+    const greeting = new GreetResponse();
+    greeting.setResult(`${processedRecords} processed records`);
+    callback(null, greeting);
+  });
 };
 
 /**
@@ -54,7 +78,7 @@ const main = () => {
   const serverAddr = '127.0.0.1:50051';
 
   // Services
-  server.addService(GreetServiceService, { greet, greetManyTimes });
+  server.addService(GreetServiceService, { greet, greetManyTimes, longGreet });
   server.addService(CalculatorServiceService, { sum });
 
   // Server start

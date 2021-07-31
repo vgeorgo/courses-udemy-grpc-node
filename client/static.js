@@ -9,13 +9,11 @@ const host = 'localhost:50051';
 
 const runGreet = () => {
   const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
-
-  // Protocol buffer Greeting message
   const greeting = new Greeting();
+  const request = new GreetRequest();
+
   greeting.setFirstName('Victor');
   greeting.setLastName('Georg Oliveira');
-
-  const request = new GreetRequest();
   request.setGreeting(greeting);
 
   client.greet(request, (err, r) => {
@@ -39,19 +37,66 @@ const runGreetManyTimes = () => {
   const request = new GreetRequest();
   request.setGreeting(greeting);
 
-  const connection = client.greetManyTimes(request, () => { });
-  connection.on('data', (res) => {
+  const call = client.greetManyTimes(request, () => { });
+  call.on('data', (res) => {
     console.log('Server stream received data: ', res.getResult());
   });
-  connection.on('status', (status) => {
+  call.on('status', (status) => {
     console.log('Server stream received status: ', status);
   });
-  connection.on('error', (err) => {
+  call.on('error', (err) => {
     console.log('Server stream received error: ', err);
   });
-  connection.on('end', () => {
+  call.on('end', () => {
     console.log('Server stream ended');
   });
+};
+
+const runLongGreet = () => {
+  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const request = new GreetRequest();
+
+  const call = client.longGreet(request, (err, r) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    console.log(`Server response from client stream: ${r.getResult()}`);
+  });
+
+  const responses = [
+    {
+      firstName: 'First',
+      lastName: 'Person',
+    },
+    {
+      firstName: 'Other',
+      lastName: 'Person',
+    },
+    {
+      firstName: 'Another',
+      lastName: 'Person',
+    }
+  ];
+
+  let step = 0;
+  const intervalId = setInterval(() => {
+    console.log(`Client streaming message: ${step}`);
+    const greeting = new Greeting();
+    const request = new GreetRequest();
+
+    greeting.setFirstName(responses[step].firstName);
+    greeting.setLastName(responses[step].lastName);
+    request.setGreeting(greeting);
+
+    call.write(request);
+
+    if (++step >= responses.length) {
+      clearInterval(intervalId);
+      call.end();
+    }
+  }, 1000);
 };
 
 const runSum = () => {
@@ -74,7 +119,8 @@ const runSum = () => {
 const main = () => {
   // runGreet();
   // runSum();
-  runGreetManyTimes();
+  // runGreetManyTimes();
+  runLongGreet();
 };
 
 main();

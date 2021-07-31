@@ -28,7 +28,7 @@ function deserialize_greet_GreetResponse(buffer_arg) {
 
 
 var GreetServiceService = exports.GreetServiceService = {
-  // Unary API
+  // Unary RPC
 greet: {
     path: '/greet.GreetService/Greet',
     requestStream: false,
@@ -40,11 +40,23 @@ greet: {
     responseSerialize: serialize_greet_GreetResponse,
     responseDeserialize: deserialize_greet_GreetResponse,
   },
-  // Streaming API
+  // Server streaming RPC
 greetManyTimes: {
     path: '/greet.GreetService/GreetManyTimes',
     requestStream: false,
     responseStream: true,
+    requestType: protos_greet_pb.GreetRequest,
+    responseType: protos_greet_pb.GreetResponse,
+    requestSerialize: serialize_greet_GreetRequest,
+    requestDeserialize: deserialize_greet_GreetRequest,
+    responseSerialize: serialize_greet_GreetResponse,
+    responseDeserialize: deserialize_greet_GreetResponse,
+  },
+  // Client streaming RPC
+longGreet: {
+    path: '/greet.GreetService/LongGreet',
+    requestStream: true,
+    responseStream: false,
     requestType: protos_greet_pb.GreetRequest,
     responseType: protos_greet_pb.GreetResponse,
     requestSerialize: serialize_greet_GreetRequest,
