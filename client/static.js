@@ -28,6 +28,32 @@ const runGreet = () => {
   });
 };
 
+const runGreetManyTimes = () => {
+  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+
+  // Protocol buffer Greeting message
+  const greeting = new Greeting();
+  greeting.setFirstName('Victor');
+  greeting.setLastName('Georg Oliveira');
+
+  const request = new GreetRequest();
+  request.setGreeting(greeting);
+
+  const connection = client.greetManyTimes(request, () => { });
+  connection.on('data', (res) => {
+    console.log('Server stream received data: ', res.getResult());
+  });
+  connection.on('status', (status) => {
+    console.log('Server stream received status: ', status);
+  });
+  connection.on('error', (err) => {
+    console.log('Server stream received error: ', err);
+  });
+  connection.on('end', () => {
+    console.log('Server stream ended');
+  });
+};
+
 const runSum = () => {
   const client = new CalculatorServiceClient(host, grpc.credentials.createInsecure());
 
@@ -46,8 +72,9 @@ const runSum = () => {
 };
 
 const main = () => {
-  runGreet();
-  runSum();
+  // runGreet();
+  // runSum();
+  runGreetManyTimes();
 };
 
 main();

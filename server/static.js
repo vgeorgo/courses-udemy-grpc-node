@@ -17,6 +17,30 @@ const greet = (call, callback) => {
 };
 
 /**
+ * Implements greetManyTimes RPC method
+ */
+const greetManyTimes = (call, _) => {
+  const responses = [
+    'Hello',
+    call.request.getGreeting().getFirstName(),
+    call.request.getGreeting().getLastName()
+  ];
+
+  let step = 0;
+  const intervalId = setInterval(() => {
+    const greeting = new GreetResponse();
+    greeting.setResult(responses[step++]);
+
+    call.write(greeting);
+
+    if (step >= responses.length) {
+      clearInterval(intervalId);
+      call.end();
+    }
+  }, 1000);
+};
+
+/**
  * Implements sum RPC method
  */
 const sum = (call, callback) => {
@@ -30,7 +54,7 @@ const main = () => {
   const serverAddr = '127.0.0.1:50051';
 
   // Services
-  server.addService(GreetServiceService, { greet });
+  server.addService(GreetServiceService, { greet, greetManyTimes });
   server.addService(CalculatorServiceService, { sum });
 
   // Server start
