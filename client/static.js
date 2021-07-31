@@ -7,6 +7,13 @@ const { CalculatorServiceClient } = require('../server/protos/calculator_grpc_pb
 
 const host = 'localhost:50051';
 
+const getRPCDeadline = (timeMs) => {
+  return new Date(new Date() + timeMs);
+};
+const getForceErrorDeadline = () => getRPCDeadline(5);
+const getDefaultDeadline = () => getRPCDeadline(1000);
+const getLongDeadline = () => getRPCDeadline(7000);
+
 const runGreet = () => {
   const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
   const greeting = new Greeting();
@@ -19,6 +26,26 @@ const runGreet = () => {
   client.greet(request, (err, r) => {
     if (err) {
       console.error(err);
+      return;
+    }
+
+    console.log(r.getResult());
+  });
+};
+
+const runGreetDeadlineError = () => {
+  const client = new GreetServiceClient(host, grpc.credentials.createInsecure());
+  const greeting = new Greeting();
+  const request = new GreetRequest();
+  const deadline = getForceErrorDeadline();
+
+  greeting.setFirstName('Victor');
+  greeting.setLastName('Georg Oliveira');
+  request.setGreeting(greeting);
+
+  client.greet(request, { deadline }, (err, r) => {
+    if (err) {
+      console.error(err.message);
       return;
     }
 
@@ -193,7 +220,8 @@ const main = () => {
   // runGreetManyTimes();
   // runLongGreet();
   // runGreetEveryone();
-  runSquareRootError();
+  // runSquareRootError();
+  runGreetDeadlineError();
 };
 
 main();
