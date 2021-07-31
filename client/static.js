@@ -2,7 +2,7 @@ const grpc = require('grpc');
 
 const { GreetRequest, Greeting } = require('../server/protos/greet_pb');
 const { GreetServiceClient } = require('../server/protos/greet_grpc_pb');
-const { SumRequest } = require('../server/protos/calculator_pb');
+const { SumRequest, SquareRootRequest } = require('../server/protos/calculator_pb');
 const { CalculatorServiceClient } = require('../server/protos/calculator_grpc_pb');
 
 const host = 'localhost:50051';
@@ -170,12 +170,30 @@ const runSum = () => {
   });
 };
 
+const runSquareRootError = () => {
+  const client = new CalculatorServiceClient(host, grpc.credentials.createInsecure());
+
+  const number = -3;
+  const request = new SquareRootRequest();
+  request.setNumber(number);
+
+  client.squareRoot(request, (err, r) => {
+    if (err) {
+      console.error(err.message);
+      return;
+    }
+
+    console.log(`${number} square root is ${r.getNumberRoot()}`);
+  });
+};
+
 const main = () => {
   // runGreet();
   // runSum();
   // runGreetManyTimes();
   // runLongGreet();
-  runGreetEveryone();
+  // runGreetEveryone();
+  runSquareRootError();
 };
 
 main();

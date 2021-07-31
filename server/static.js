@@ -2,7 +2,7 @@ const grpc = require('grpc');
 
 const { GreetResponse } = require('./protos/greet_pb');
 const { GreetServiceService } = require('./protos/greet_grpc_pb');
-const { SumResponse } = require('./protos/calculator_pb');
+const { SumResponse, SquareRootResponse } = require('./protos/calculator_pb');
 const { CalculatorServiceService } = require('./protos/calculator_grpc_pb');
 
 /**
@@ -119,13 +119,30 @@ const sum = (call, callback) => {
   callback(null, sum);
 };
 
+/**
+ * Implements sum RPC method
+ */
+const squareRoot = (call, callback) => {
+  const number = call.request.getNumber();
+  if (number < 0) {
+    return callback({
+      code: grpc.status.INVALID_ARGUMENT,
+      message: `Number must be positive, sent ${number}`
+    });
+  }
+
+  const response = new SquareRootResponse();
+  response.setNumberRoot(Math.sqrt(number));
+  callback(null, response);
+};
+
 const main = () => {
   const server = new grpc.Server();
   const serverAddr = '127.0.0.1:50051';
 
   // Services
   server.addService(GreetServiceService, { greet, greetManyTimes, longGreet, greetEveryone });
-  server.addService(CalculatorServiceService, { sum });
+  server.addService(CalculatorServiceService, { sum, squareRoot });
 
   // Server start
   server.bind(serverAddr, grpc.ServerCredentials.createInsecure());

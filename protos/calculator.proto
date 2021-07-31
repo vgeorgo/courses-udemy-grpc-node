@@ -1,9 +1,12 @@
 syntax = "proto3";
 
-package sum;
+package calculator;
 
 service CalculatorService {
+  // Sums X + Y and returns the result.
   rpc Sum (SumRequest) returns (SumResponse) {};
+  // Receives a number and returns its square root.
+  rpc SquareRoot (SquareRootRequest) returns (SquareRootResponse) {};
 }
 
 message SumRequest {
@@ -13,4 +16,12 @@ message SumRequest {
 
 message SumResponse {
   int32 result = 1;
+}
+
+message SquareRootRequest {
+  int32 number = 1;
+}
+
+message SquareRootResponse {
+  int32 number_root = 1;
 }
