@@ -7,18 +7,19 @@ services:
       - "50051:50051"
     volumes:
       - ./certs:/usr/src/app/certs
-      - ./protos:/usr/src/app/protos
-      - ./server:/usr/src/app/server
+      - ./app:/usr/src/app
+      - /usr/src/app/node_modules/
     networks:
       - pg-network
+
   postgres:
     image: postgres
     environment:
       POSTGRES_PASSWORD: "123456"
     ports:
       - "5432:5432"
-    volumes:
-      - ./.pgdata:/var/lib/postgresql/data
+    # volumes:
+    #   - ./.pgdata:/var/lib/postgresql/data
     networks:
       - pg-network
       

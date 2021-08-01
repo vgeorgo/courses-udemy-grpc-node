@@ -1,5 +1,8 @@
+#!/bin/sh
+
 echo "Creating certs folder ..."
-mkdir certs && cd certs
+mkdir certs
+cd certs
 
 echo "Generating certificates ..."
 

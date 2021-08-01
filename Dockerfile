@@ -1,12 +1,10 @@
 FROM node:14-alpine
 
 WORKDIR /usr/src/app
+COPY app .
 
-COPY certs ./certs
-COPY protos ./protos
-COPY server ./server
-COPY package*.json ./
+RUN npm i -g grpc-tools --unsafe-perm
+RUN npm i
 
-RUN npm install
-
+EXPOSE 50051
 CMD [ "npm", "run", "static-server" ]

@@ -7,7 +7,7 @@ const { GreetServiceClient } = require('../server/protos/greet_grpc_pb');
 const { SumRequest, SquareRootRequest } = require('../server/protos/calculator_pb');
 const { CalculatorServiceClient } = require('../server/protos/calculator_grpc_pb');
 
-const host = 'localhost:50051';
+const host = '127.0.0.1:50051';
 const useCertificates = false;
 
 const getCertificateConfig = () => {
