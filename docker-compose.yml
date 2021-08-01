@@ -9,22 +9,25 @@ services:
       - ./certs:/usr/src/app/certs
       - ./app:/usr/src/app
       - /usr/src/app/node_modules/
+    depends_on:
+      - postgres
     networks:
       - pg-network
 
   postgres:
-    image: postgres
+    image: postgres:13.3
     environment:
-      POSTGRES_PASSWORD: "123456"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: courses-udemy-grpc-node
+      PGDATA: /var/lib/postgresql/data
     ports:
       - "5432:5432"
-    # volumes:
-    #   - ./.pgdata:/var/lib/postgresql/data
     networks:
       - pg-network
       
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:5.5
     environment:
       PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
       PGADMIN_DEFAULT_PASSWORD: "123456"
