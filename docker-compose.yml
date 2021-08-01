@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  grpc-server:
+    build: .
+    ports:
+      - "50051:50051"
+    volumes:
+      - ./certs:/usr/src/app/certs
+      - ./protos:/usr/src/app/protos
+      - ./server:/usr/src/app/server
+    networks:
+      - pg-network
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "123456"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.pgdata:/var/lib/postgresql/data
+    networks:
+      - pg-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    ports:
+      - "5001:80"
+    depends_on:
+      - postgres
+    networks:
+      - pg-network
+
+networks: 
+  pg-network:
+    driver: bridge
