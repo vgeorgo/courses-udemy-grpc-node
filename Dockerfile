@@ -6,5 +6,7 @@ COPY app .
 RUN npm i -g grpc-tools --unsafe-perm
 RUN npm i
 
+# RUN cd server && npx knex migrate:latest && npx knex seed:run
+
 EXPOSE 50051
-CMD [ "npm", "run", "static-server" ]
+CMD npm run ${RUN_COMMAND}

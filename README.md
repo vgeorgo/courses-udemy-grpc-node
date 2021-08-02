@@ -36,6 +36,12 @@ The output will be a **certs** folder with the certificates that will be used.
 
 Install docker-compose: https://docs.docker.com/compose/install/
 
+Choose a command to start the server in the **.env** file:
+```
+# This can be static-server || dynamic-server || blog-server
+RUN_COMMAND=blog-server
+```
+
 Run project, postgres and pgadmin:
 ```
 # this will initialize the docker-compose file
