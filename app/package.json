@@ -6,8 +6,10 @@
   "scripts": {
     "static-server": "npx nodemon ./server/static.js",
     "dynamic-server": "npx nodemon ./server/dynamic.js",
+    "blog-server": "npx nodemon ./server/blog.js",
     "static-client": "node ./client/static.js",
-    "dynamic-client": "node ./client/dynamic.js"
+    "dynamic-client": "node ./client/dynamic.js",
+    "blog-client": "node ./client/blog.js"
   },
   "repository": {
     "type": "git",
