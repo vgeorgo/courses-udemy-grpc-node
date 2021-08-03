@@ -75,11 +75,25 @@ const runUpdateBlog = () => {
   });
 };
 
+const runDeleteBlog = () => {
+  const client = new BlogServiceClient(host, grpc.credentials.createInsecure());
+  const request = new BlogIdRequest();
+
+  request.setId(12);
+
+  client.deleteBlog(request, (err, r) => {
+    if (err) return console.log(err.message);
+
+    console.log(r.getBlog().toString());
+  });
+};
+
 const main = () => {
-  // runListBlogs();
+  runListBlogs();
   // runCreateBlog();
   // runFindBlog();
-  runUpdateBlog();
+  // runUpdateBlog();
+  // runDeleteBlog();
 };
 
 main();

@@ -1,6 +1,8 @@
 const knex = require('../db');
 const { Blog } = require('../protos/blog_pb');
 
+const table = 'blogs';
+
 const createFromDb = (row) => {
   const blog = new Blog();
 
@@ -25,8 +27,9 @@ const attrFromProto = (blog, useId = false) => {
 module.exports = {
   createFromDb,
   attrFromProto,
-  list: () => knex('blogs'),
-  insert: (blog) => knex('blogs').insert(attrFromProto(blog)),
-  find: (id) => knex('blogs').where({ id }).first(),
-  update: (blog) => knex('blogs').where({ id: blog.getId() }).update(attrFromProto(blog)),
+  list: () => knex(table),
+  insert: (blog) => knex(table).insert(attrFromProto(blog)),
+  findOne: (id) => knex(table).where({ id }).first(),
+  updateOne: (blog) => knex(table).where({ id: blog.getId() }).update(attrFromProto(blog)),
+  deleteOne: (id) => knex(table).where({ id }).delete(),
 };
