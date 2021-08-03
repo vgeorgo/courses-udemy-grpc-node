@@ -2,7 +2,7 @@ const path = require('path');
 const grpc = require('grpc');
 const fs = require('fs');
 
-const { Blog, ListBlogRequest, CreateBlogRequest } = require('../server/protos/blog_pb');
+const { Blog, ListBlogRequest, BlogRequest, BlogIdRequest } = require('../server/protos/blog_pb');
 const { BlogServiceClient } = require('../server/protos/blog_grpc_pb');
 
 const host = '127.0.0.1:50051';
@@ -25,10 +25,10 @@ const runListBlogs = () => {
   });
 };
 
-const runCreateBlogs = () => {
+const runCreateBlog = () => {
   const client = new BlogServiceClient(host, grpc.credentials.createInsecure());
   const blog = new Blog();
-  const request = new CreateBlogRequest();
+  const request = new BlogRequest();
 
   blog.setAuthor('Robot');
   blog.setTitle('Is AI a living thing?');
@@ -43,9 +43,43 @@ const runCreateBlogs = () => {
   });
 };
 
+const runFindBlog = () => {
+  const client = new BlogServiceClient(host, grpc.credentials.createInsecure());
+  const request = new BlogIdRequest();
+
+  request.setId(11);
+
+  client.findBlog(request, (err, r) => {
+    if (err) return console.log(err.message);
+
+    console.log(r.getBlog().toString());
+  });
+};
+
+const runUpdateBlog = () => {
+  const client = new BlogServiceClient(host, grpc.credentials.createInsecure());
+  const blog = new Blog();
+  const request = new BlogRequest();
+
+  blog.setId(50);
+  blog.setAuthor('No one');
+  blog.setTitle('Nothing');
+  blog.setContent('No content');
+
+  request.setBlog(blog);
+
+  client.updateBlog(request, (err, r) => {
+    if (err) return console.log(err.message);
+
+    console.log(r.getBlog().toString());
+  });
+};
+
 const main = () => {
   // runListBlogs();
-  runCreateBlogs();
+  // runCreateBlog();
+  // runFindBlog();
+  runUpdateBlog();
 };
 
 main();

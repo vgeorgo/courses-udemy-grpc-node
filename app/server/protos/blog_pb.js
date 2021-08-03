@@ -12,8 +12,9 @@ var goog = jspb;
 var global = Function('return this')();
 
 goog.exportSymbol('proto.blog.Blog', null, global);
+goog.exportSymbol('proto.blog.BlogIdRequest', null, global);
+goog.exportSymbol('proto.blog.BlogRequest', null, global);
 goog.exportSymbol('proto.blog.BlogResponse', null, global);
-goog.exportSymbol('proto.blog.CreateBlogRequest', null, global);
 goog.exportSymbol('proto.blog.ListBlogRequest', null, global);
 
 /**
@@ -524,12 +525,12 @@ proto.blog.BlogResponse.prototype.hasBlog = function() {
  * @extends {jspb.Message}
  * @constructor
  */
-proto.blog.CreateBlogRequest = function(opt_data) {
+proto.blog.BlogRequest = function(opt_data) {
   jspb.Message.initialize(this, opt_data, 0, -1, null, null);
 };
-goog.inherits(proto.blog.CreateBlogRequest, jspb.Message);
+goog.inherits(proto.blog.BlogRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
-  proto.blog.CreateBlogRequest.displayName = 'proto.blog.CreateBlogRequest';
+  proto.blog.BlogRequest.displayName = 'proto.blog.BlogRequest';
 }
 
 
@@ -544,8 +545,8 @@ if (jspb.Message.GENERATE_TO_OBJECT) {
  *     for transitional soy proto support: http://goto/soy-param-migration
  * @return {!Object}
  */
-proto.blog.CreateBlogRequest.prototype.toObject = function(opt_includeInstance) {
-  return proto.blog.CreateBlogRequest.toObject(opt_includeInstance, this);
+proto.blog.BlogRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.blog.BlogRequest.toObject(opt_includeInstance, this);
 };
 
 
@@ -554,11 +555,11 @@ proto.blog.CreateBlogRequest.prototype.toObject = function(opt_includeInstance) 
  * @param {boolean|undefined} includeInstance Whether to include the JSPB
  *     instance for transitional soy proto support:
  *     http://goto/soy-param-migration
- * @param {!proto.blog.CreateBlogRequest} msg The msg instance to transform.
+ * @param {!proto.blog.BlogRequest} msg The msg instance to transform.
  * @return {!Object}
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.blog.CreateBlogRequest.toObject = function(includeInstance, msg) {
+proto.blog.BlogRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     blog: (f = msg.getBlog()) && proto.blog.Blog.toObject(includeInstance, f)
   };
@@ -574,23 +575,23 @@ proto.blog.CreateBlogRequest.toObject = function(includeInstance, msg) {
 /**
  * Deserializes binary data (in protobuf wire format).
  * @param {jspb.ByteSource} bytes The bytes to deserialize.
- * @return {!proto.blog.CreateBlogRequest}
+ * @return {!proto.blog.BlogRequest}
  */
-proto.blog.CreateBlogRequest.deserializeBinary = function(bytes) {
+proto.blog.BlogRequest.deserializeBinary = function(bytes) {
   var reader = new jspb.BinaryReader(bytes);
-  var msg = new proto.blog.CreateBlogRequest;
-  return proto.blog.CreateBlogRequest.deserializeBinaryFromReader(msg, reader);
+  var msg = new proto.blog.BlogRequest;
+  return proto.blog.BlogRequest.deserializeBinaryFromReader(msg, reader);
 };
 
 
 /**
  * Deserializes binary data (in protobuf wire format) from the
  * given reader into the given message object.
- * @param {!proto.blog.CreateBlogRequest} msg The message object to deserialize into.
+ * @param {!proto.blog.BlogRequest} msg The message object to deserialize into.
  * @param {!jspb.BinaryReader} reader The BinaryReader to use.
- * @return {!proto.blog.CreateBlogRequest}
+ * @return {!proto.blog.BlogRequest}
  */
-proto.blog.CreateBlogRequest.deserializeBinaryFromReader = function(msg, reader) {
+proto.blog.BlogRequest.deserializeBinaryFromReader = function(msg, reader) {
   while (reader.nextField()) {
     if (reader.isEndGroup()) {
       break;
@@ -615,9 +616,9 @@ proto.blog.CreateBlogRequest.deserializeBinaryFromReader = function(msg, reader)
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
-proto.blog.CreateBlogRequest.prototype.serializeBinary = function() {
+proto.blog.BlogRequest.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.blog.CreateBlogRequest.serializeBinaryToWriter(this, writer);
+  proto.blog.BlogRequest.serializeBinaryToWriter(this, writer);
   return writer.getResultBuffer();
 };
 
@@ -625,11 +626,11 @@ proto.blog.CreateBlogRequest.prototype.serializeBinary = function() {
 /**
  * Serializes the given message to binary data (in protobuf wire
  * format), writing to the given BinaryWriter.
- * @param {!proto.blog.CreateBlogRequest} message
+ * @param {!proto.blog.BlogRequest} message
  * @param {!jspb.BinaryWriter} writer
  * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.blog.CreateBlogRequest.serializeBinaryToWriter = function(message, writer) {
+proto.blog.BlogRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getBlog();
   if (f != null) {
@@ -646,19 +647,19 @@ proto.blog.CreateBlogRequest.serializeBinaryToWriter = function(message, writer)
  * optional Blog blog = 1;
  * @return {?proto.blog.Blog}
  */
-proto.blog.CreateBlogRequest.prototype.getBlog = function() {
+proto.blog.BlogRequest.prototype.getBlog = function() {
   return /** @type{?proto.blog.Blog} */ (
     jspb.Message.getWrapperField(this, proto.blog.Blog, 1));
 };
 
 
 /** @param {?proto.blog.Blog|undefined} value */
-proto.blog.CreateBlogRequest.prototype.setBlog = function(value) {
+proto.blog.BlogRequest.prototype.setBlog = function(value) {
   jspb.Message.setWrapperField(this, 1, value);
 };
 
 
-proto.blog.CreateBlogRequest.prototype.clearBlog = function() {
+proto.blog.BlogRequest.prototype.clearBlog = function() {
   this.setBlog(undefined);
 };
 
@@ -667,8 +668,150 @@ proto.blog.CreateBlogRequest.prototype.clearBlog = function() {
  * Returns whether this field is set.
  * @return {!boolean}
  */
-proto.blog.CreateBlogRequest.prototype.hasBlog = function() {
+proto.blog.BlogRequest.prototype.hasBlog = function() {
   return jspb.Message.getField(this, 1) != null;
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.blog.BlogIdRequest = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.blog.BlogIdRequest, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.blog.BlogIdRequest.displayName = 'proto.blog.BlogIdRequest';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.blog.BlogIdRequest.prototype.toObject = function(opt_includeInstance) {
+  return proto.blog.BlogIdRequest.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.blog.BlogIdRequest} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.blog.BlogIdRequest.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    id: jspb.Message.getFieldWithDefault(msg, 1, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.blog.BlogIdRequest}
+ */
+proto.blog.BlogIdRequest.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.blog.BlogIdRequest;
+  return proto.blog.BlogIdRequest.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.blog.BlogIdRequest} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.blog.BlogIdRequest}
+ */
+proto.blog.BlogIdRequest.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setId(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.blog.BlogIdRequest.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.blog.BlogIdRequest.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.blog.BlogIdRequest} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.blog.BlogIdRequest.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getId();
+  if (f !== 0) {
+    writer.writeInt32(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional int32 id = 1;
+ * @return {number}
+ */
+proto.blog.BlogIdRequest.prototype.getId = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/** @param {number} value */
+proto.blog.BlogIdRequest.prototype.setId = function(value) {
+  jspb.Message.setProto3IntField(this, 1, value);
 };
 
 

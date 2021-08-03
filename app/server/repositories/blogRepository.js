@@ -12,8 +12,8 @@ const createFromDb = (row) => {
   return blog;
 }
 
-const attrFromProto = (blog) => {
-  const attrs = blog.getId() ? { id: blog.getId() } : {};
+const attrFromProto = (blog, useId = false) => {
+  const attrs = useId ? { id: blog.getId() } : {};
 
   return Object.assign(attrs, {
     author: blog.getAuthor(),
@@ -27,4 +27,6 @@ module.exports = {
   attrFromProto,
   list: () => knex('blogs'),
   insert: (blog) => knex('blogs').insert(attrFromProto(blog)),
+  find: (id) => knex('blogs').where({ id }).first(),
+  update: (blog) => knex('blogs').where({ id: blog.getId() }).update(attrFromProto(blog)),
 };

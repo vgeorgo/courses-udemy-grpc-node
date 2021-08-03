@@ -4,7 +4,10 @@ package blog;
 
 service BlogService {
   rpc ListBlog (ListBlogRequest) returns (stream BlogResponse) {};
-  rpc CreateBlog (CreateBlogRequest) returns (BlogResponse) {};
+  rpc CreateBlog (BlogRequest) returns (BlogResponse) {};
+  rpc UpdateBlog (BlogRequest) returns (BlogResponse) {};
+  rpc FindBlog (BlogIdRequest) returns (BlogResponse) {};
+  rpc DeleteBlog (BlogIdRequest) returns (BlogResponse) {};
 }
 
 message Blog {
@@ -20,6 +23,10 @@ message BlogResponse {
   Blog blog = 1;
 }
 
-message CreateBlogRequest {
+message BlogRequest {
   Blog blog = 1;
+}
+
+message BlogIdRequest {
+  int32 id = 1;
 }
