@@ -55,3 +55,7 @@ Exec container in interactive mode, considering both root folder and docker-comp
 # After exec run client script to test the examples inside the container
 npm run static-client
 ```
+
+## Evans
+
+CLI gRPC: https://github.com/ktr0731/evans
